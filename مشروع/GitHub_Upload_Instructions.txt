@@ -1,0 +1,45 @@
+تعليمات رفع مشروع Care4u KSA على GitHub
+=================================================
+
+للرفع على GitHub، يجب اتباع الخطوات التالية:
+
+1. قم بتحميل وتثبيت Git من الرابط:
+   https://git-scm.com/downloads
+
+2. قم بإنشاء حساب على GitHub إذا لم يكن لديك واحد من الرابط:
+   https://github.com/signup
+
+3. بعد تثبيت Git، قم بفتح نافذة Command Prompt واكتب الأوامر التالية:
+
+   cd C:\Users\User\Desktop\مشروع
+   git init
+   git add .
+   git commit -m "النسخة الأولى من تطبيق Care4u KSA"
+
+4. قم بإنشاء مستودع جديد على GitHub من الرابط:
+   https://github.com/new
+
+5. ثم قم بكتابة الأوامر التالية مع تبديل USERNAME و REPOSITORY_NAME باسم المستخدم واسم المستودع الخاص بك:
+
+   git remote add origin https://github.com/USERNAME/REPOSITORY_NAME.git
+   git branch -M main
+   git push -u origin main
+
+6. إذا طلب منك إدخال اسم المستخدم وكلمة المرور، قم بإدخالهما.
+
+ملاحظة: إذا كنت تستخدم Windows، فقد تحتاج إلى تثبيت Git Credential Manager مع Git لتسهيل عملية المصادقة.
+
+اختياري: يمكنك استخدام GitHub Desktop بدلاً من الأوامر:
+================================================
+يمكنك استخدام GitHub Desktop وهو تطبيق رسومي يسهل عملية رفع المشاريع إلى GitHub بدون استخدام الأوامر:
+
+1. قم بتحميل وتثبيت GitHub Desktop من الرابط:
+   https://desktop.github.com/
+
+2. قم بتسجيل الدخول باستخدام حساب GitHub الخاص بك.
+
+3. اختر "Add an Existing Repository from your hard drive" ثم حدد مجلد المشروع.
+
+4. قم بإنشاء مستودع جديد على GitHub من خلال التطبيق مباشرة.
+
+5. اضغط على زر "Publish repository" لرفع المشروع. 

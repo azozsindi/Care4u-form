@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مرسل الأسئلة - Care4u KSA</title>
+    <style>
+        body { font-family: Arial, sans-serif; direction: rtl; background: #f8f8f8; }
+        .container { max-width: 600px; margin: 30px auto; background: #fff; padding: 30px; border-radius: 10px; box-shadow: 0 0 10px #ccc; }
+        .logo-row { text-align: center; background: #c026a7; padding: 10px 0 0 0; border-radius: 10px 10px 0 0; }
+        .logo-row img { width: 120px; margin-bottom: 10px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 0; }
+        th, td { border: 1px solid #222; padding: 10px; text-align: center; }
+        th { background: #c026a7; color: #fff; font-size: 18px; }
+        tr td:first-child { background: #f3e6f7; font-weight: bold; width: 40%; }
+        input[type="text"], textarea { width: 100%; border: none; background: transparent; text-align: center; font-size: 16px; }
+        .export-btn { margin-top: 20px; background: #c026a7; color: #fff; border: none; padding: 12px 30px; border-radius: 5px; font-size: 18px; cursor: pointer; }
+        .radio-group { display: flex; justify-content: center; gap: 20px; }
+        .radio-group label { font-size: 16px; }
+    </style>
+</head>
+<body>
+    <div class="container" id="pdf-content">
+        <div class="logo-row">
+            <img src="https://files.oaiusercontent.com/file-1b1b1b1b1b1b1b1b1b1b1b1b1b1b1b1b1b1b1b1b1b1b1b1b1b1b1b1b1b1b1b1b1b1b1b1b1b1b/logo.png" alt="Care4u KSA Logo" id="logo-img">
+        </div>
+        <table>
+            <tr><td>الاسم</td><td><input type="text" id="q1"></td></tr>
+            <tr><td>رقم الهوية</td><td><input type="text" id="q2" maxlength="10" pattern="\d{10}" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,10)"></td></tr>
+            <tr><td>العمر</td><td><input type="text" id="q3"></td></tr>
+            <tr><td>التاريخ</td><td><input type="date" id="q4"></td></tr>
+            <tr><td>رقم التواصل</td><td><input type="text" id="q5" maxlength="10" pattern="\d{10}" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,10)"></td></tr>
+            <tr><td>الشكوى</td><td><input type="text" id="q6"></td></tr>
+            <tr><td>هل يوجد أي نوع حساسية</td><td><div class="radio-group"><label><input type="radio" name="q7" value="نعم"> نعم</label><label><input type="radio" name="q7" value="لا"> لا</label></div></td></tr>
+            <tr><td>هل يوجد أي امراض معدية</td><td><div class="radio-group"><label><input type="radio" name="q8" value="نعم"> نعم</label><label><input type="radio" name="q8" value="لا"> لا</label></div></td></tr>
+            <tr><td>العمليات السابقة</td><td><input type="text" id="q9"></td></tr>
+            <tr><td>هل يوجد تحليل للاخر شهر</td><td><div class="radio-group"><label><input type="radio" name="q10" value="نعم"> نعم</label><label><input type="radio" name="q10" value="لا"> لا</label></div></td></tr>
+            <tr><td>هل يوجد تقرير طبي</td><td><div class="radio-group"><label><input type="radio" name="q11" value="نعم"> نعم</label><label><input type="radio" name="q11" value="لا"> لا</label></div></td></tr>
+            <tr><td>هل يوجد طبيب في الزيارة</td><td><div class="radio-group"><label><input type="radio" name="q12" value="نعم"> نعم</label><label><input type="radio" name="q12" value="لا"> لا</label></div></td></tr>
+            <tr><td>الخدمة المطلوبة</td><td><input type="text" id="q13"></td></tr>
+            <tr><td>مدة الزيارة</td><td><input type="text" id="q14"></td></tr>
+            <tr><td>اسم المنسق</td><td><input type="text" id="q15"></td></tr>
+            <tr><td>الحساب</td><td><input type="text" id="q16"></td></tr>
+            <tr><td>طريقة الدفع</td><td><input type="text" id="q17"></td></tr>
+        </table>
+    </div>
+    <button class="export-btn" onclick="exportPDF()">تصدير إلى PDF</button>
+
+    <script src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
+    <script src="https://unpkg.com/html2canvas@latest/dist/html2canvas.min.js"></script>
+    <script>
+    function exportPDF() {
+        // تحقق من رقم الهوية ورقم التواصل
+        var id = document.getElementById('q2').value;
+        var phone = document.getElementById('q5').value;
+        if (id.length !== 10 || phone.length !== 10) {
+            alert('رقم الهوية ورقم التواصل يجب أن يكونا 10 أرقام فقط');
+            return;
+        }
+        
+        // عرض مؤشر التحميل
+        const pdfContent = document.getElementById('pdf-content');
+        const btnText = document.querySelector('.export-btn').textContent;
+        document.querySelector('.export-btn').textContent = 'جاري التصدير...';
+        document.querySelector('.export-btn').disabled = true;
+        
+        // تحسين خيارات html2canvas للأداء الأفضل
+        setTimeout(() => {
+            html2canvas(pdfContent, { 
+                scale: 1.5, // تقليل المقياس قليلاً لتحسين الأداء
+                useCORS: true,
+                allowTaint: true,
+                logging: false,
+                backgroundColor: null,
+                imageTimeout: 0,
+                removeContainer: true, // إزالة الحاويات المؤقتة
+                ignoreElements: (element) => {
+                    // تجاهل العناصر غير المرئية
+                    return window.getComputedStyle(element).visibility === 'hidden';
+                }
+            }).then(canvas => {
+                const imgData = canvas.toDataURL('image/jpeg', 0.92); // استخدام jpeg بدلاً من png للسرعة
+                
+                try {
+                    const { jsPDF } = window.jspdf;
+                    const pdf = new jsPDF({ 
+                        orientation: 'p', 
+                        unit: 'pt', 
+                        format: 'a4',
+                        compress: true // تمكين ضغط PDF
+                    });
+                    
+                    const pageWidth = pdf.internal.pageSize.getWidth();
+                    const imgWidth = pageWidth - 40;
+                    const imgHeight = canvas.height * imgWidth / canvas.width;
+                    
+                    pdf.addImage(imgData, 'JPEG', 20, 20, imgWidth, imgHeight, undefined, 'FAST');
+                    pdf.save('نموذج-زيارة.pdf');
+                    
+                } catch (error) {
+                    console.error('حدث خطأ:', error);
+                    alert('حدث خطأ أثناء إنشاء ملف PDF. يرجى المحاولة مرة أخرى باستخدام متصفح حديث.');
+                } finally {
+                    // إعادة تفعيل الزر
+                    document.querySelector('.export-btn').textContent = btnText;
+                    document.querySelector('.export-btn').disabled = false;
+                }
+            }).catch(error => {
+                console.error('خطأ في تحويل HTML إلى Canvas:', error);
+                alert('حدث خطأ أثناء تحويل النموذج. يرجى المحاولة مرة أخرى.');
+                document.querySelector('.export-btn').textContent = btnText;
+                document.querySelector('.export-btn').disabled = false;
+            });
+        }, 50); // تأخير قصير لتسريع عملية التحميل
+    }
+    </script>
+</body>
+</html> 

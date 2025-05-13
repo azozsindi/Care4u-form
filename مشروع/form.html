@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نموذج طلب خدمة - Care4u KSA</title>
+    <style>
+        body { font-family: Arial, sans-serif; direction: rtl; background: #f8f8f8; }
+        .container { max-width: 600px; margin: 30px auto; background: #fff; padding: 30px; border-radius: 10px; box-shadow: 0 0 10px #ccc; }
+        .logo-row { text-align: center; background: #4a0063; padding: 15px 0; border-radius: 10px 10px 0 0; }
+        .logo-row img { width: 80px; margin-bottom: 5px; }
+        .logo-row h2 { color: white; margin: 0; font-size: 24px; font-weight: bold; }
+        .logo-row p { color: white; margin: 0; font-size: 14px; opacity: 0.8; }
+        table { width: 100%; border-collapse: collapse; margin-top: 0; }
+        th, td { border: 1px solid #222; padding: 10px; text-align: center; }
+        th { background: #4a0063; color: #fff; font-size: 18px; }
+        tr td:first-child { background: #f3e6f7; font-weight: bold; width: 40%; }
+        input[type="text"], textarea, select, input[type="date"], input[type="number"] { width: 100%; border: none; background: transparent; text-align: center; font-size: 16px; }
+        .export-btn { margin-top: 20px; background: #4a0063; color: #fff; border: none; padding: 12px 30px; border-radius: 5px; font-size: 18px; cursor: pointer; }
+        .reset-btn { margin-top: 20px; background: #6c757d; color: #fff; border: none; padding: 12px 30px; border-radius: 5px; font-size: 18px; cursor: pointer; margin-right: 10px; }
+        .radio-group { display: flex; justify-content: center; gap: 20px; }
+        .radio-group label { font-size: 16px; }
+        select { padding: 5px; width: 100%; }
+        .watermark { position: fixed; bottom: 10px; right: 10px; opacity: 0.15; z-index: -1; }
+        .watermark img { width: 150px; }
+        
+        .buttons {
+            margin: 20px auto;
+            text-align: center;
+            max-width: 600px;
+        }
+        
+        /* تنسيق قائمة الملفات المصدرة */
+        .exported-files { 
+            max-width: 600px; 
+            margin: 20px auto; 
+            background: #fff; 
+            padding: 15px; 
+            border-radius: 10px; 
+            box-shadow: 0 0 10px #ccc; 
+        }
+        .exported-files h3 { 
+            color: #4a0063; 
+            border-bottom: 2px solid #4a0063; 
+            padding-bottom: 5px; 
+            margin-top: 0; 
+        }
+        .file-list { 
+            list-style: none; 
+            padding: 0; 
+            margin: 0; 
+        }
+        .file-list li { 
+            padding: 8px; 
+            margin-bottom: 5px; 
+            background: #f3e6f7; 
+            border-radius: 5px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+        }
+        .file-list a { 
+            color: #4a0063; 
+            text-decoration: none; 
+            font-weight: bold; 
+        }
+        .file-list a:hover { 
+            text-decoration: underline; 
+        }
+        .file-date { 
+            color: #666; 
+            font-size: 0.9em; 
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="pdf-content">
+        <div class="logo-row">
+            <img src="logo.svg" alt="Care4u KSA Logo" id="logo-img">
+            <h2>Care4u KSA</h2>
+            <p>FOR ALL YOUR SUPPORT NEEDS</p>
+        </div>
+        <table>
+            <tr><td>الاسم</td><td><input type="text" id="name"></td></tr>
+            <tr><td>رقم الهوية</td><td><input type="text" id="identity" maxlength="10" pattern="\d{10}" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,10)"></td></tr>
+            <tr><td>العمر</td><td><input type="number" id="age" min="1" max="120"></td></tr>
+            <tr><td>التاريخ</td><td><input type="date" id="date"></td></tr>
+            <tr><td>رقم التواصل</td><td><input type="text" id="phone" maxlength="10" pattern="\d{10}" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,10)"></td></tr>
+            <tr><td>الشكوى</td><td><input type="text" id="complaint"></td></tr>
+            <tr><td>هل يوجد أي نوع حساسية</td><td><div class="radio-group"><label><input type="radio" name="allergy" value="نعم"> نعم</label><label><input type="radio" name="allergy" value="لا"> لا</label></div></td></tr>
+            <tr><td>هل يوجد أي امراض معدية</td><td><div class="radio-group"><label><input type="radio" name="infectious" value="نعم"> نعم</label><label><input type="radio" name="infectious" value="لا"> لا</label></div></td></tr>
+            <tr><td>العمليات السابقة</td><td><input type="text" id="previous_operations"></td></tr>
+            <tr><td>هل يوجد تحليل للاخر شهر</td><td><div class="radio-group"><label><input type="radio" name="analysis" value="نعم"> نعم</label><label><input type="radio" name="analysis" value="لا"> لا</label></div></td></tr>
+            <tr><td>هل يوجد تقرير طبي</td><td><div class="radio-group"><label><input type="radio" name="medical_report" value="نعم"> نعم</label><label><input type="radio" name="medical_report" value="لا"> لا</label></div></td></tr>
+            <tr><td>هل يوجد طبيب في الزيارة</td><td><div class="radio-group"><label><input type="radio" name="doctor_visit" value="نعم"> نعم</label><label><input type="radio" name="doctor_visit" value="لا"> لا</label></div></td></tr>
+            <tr><td>الخدمة المطلوبة</td>
+                <td>
+                    <select id="service">
+                        <option value="" selected disabled>اختر الخدمة المطلوبة</option>
+                        <option value="طبيب">طبيب</option>
+                        <option value="ممرضة">ممرضة</option>
+                        <option value="علاج طبيعي">علاج طبيعي</option>
+                        <option value="مقدم رعاية">مقدم رعاية</option>
+                        <option value="اشعة">اشعة</option>
+                        <option value="تحاليل">تحاليل</option>
+                    </select>
+                </td>
+            </tr>
+            <tr><td>مدة الزيارة</td><td><input type="text" id="visit_duration"></td></tr>
+            <tr><td>اسم المنسق</td><td><input type="text" id="coordinator"></td></tr>
+            <tr><td>الحساب</td><td><input type="text" id="account"></td></tr>
+            <tr><td>طريقة الدفع</td>
+                <td>
+                    <select id="payment">
+                        <option value="" selected disabled>اختر طريقة الدفع</option>
+                        <option value="كاش">كاش</option>
+                        <option value="شبكة">شبكة</option>
+                        <option value="تحويل">تحويل</option>
+                    </select>
+                </td>
+            </tr>
+        </table>
+        
+        <!-- علامة مائية للوجو -->
+        <div class="watermark">
+            <img src="logo.svg" alt="Care4u KSA Watermark">
+        </div>
+    </div>
+    
+    <div class="buttons">
+        <button class="export-btn" onclick="exportPDF()">تصدير إلى PDF</button>
+        <button class="reset-btn" onclick="resetForm()">إعادة ضبط</button>
+    </div>
+    
+    <!-- قائمة الملفات المصدرة -->
+    <div class="exported-files">
+        <h3>الملفات المصدرة</h3>
+        <ul class="file-list" id="exported-files-list">
+            <!-- ستتم إضافة الملفات هنا عبر JavaScript -->
+        </ul>
+    </div>
+
+    <!-- المكتبات المطلوبة لإنشاء PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
+    <script>
+        // استعادة قائمة الملفات المصدرة من التخزين المحلي عند تحميل الصفحة
+        document.addEventListener('DOMContentLoaded', function() {
+            loadExportedFiles();
+            
+            // ضبط التاريخ الافتراضي ليكون اليوم الحالي
+            var today = new Date().toISOString().split('T')[0];
+            document.getElementById('date').value = today;
+        });
+        
+        // دالة لعرض قائمة الملفات المصدرة
+        function loadExportedFiles() {
+            const filesList = document.getElementById('exported-files-list');
+            const savedFiles = JSON.parse(localStorage.getItem('exportedFiles')) || [];
+            
+            // تفريغ القائمة
+            filesList.innerHTML = '';
+            
+            if (savedFiles.length === 0) {
+                filesList.innerHTML = '<li>لا توجد ملفات مصدرة حتى الآن</li>';
+                return;
+            }
+            
+            // إضافة الملفات المحفوظة إلى القائمة (من الأحدث للأقدم)
+            savedFiles.reverse().forEach(file => {
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <span>${file.name}</span>
+                    <span class="file-date">${file.date}</span>
+                `;
+                filesList.appendChild(li);
+            });
+        }
+        
+        // دالة لحفظ ملف مصدر في قائمة الملفات
+        function saveExportedFile(fileName) {
+            // الحصول على قائمة الملفات المحفوظة
+            const savedFiles = JSON.parse(localStorage.getItem('exportedFiles')) || [];
+            
+            // إضافة الملف الجديد
+            const now = new Date();
+            const formattedDate = `${now.getDate()}/${now.getMonth() + 1}/${now.getFullYear()} ${now.getHours()}:${String(now.getMinutes()).padStart(2, '0')}`;
+            
+            savedFiles.push({
+                name: fileName,
+                date: formattedDate,
+                timestamp: now.getTime()
+            });
+            
+            // حفظ القائمة المحدثة
+            localStorage.setItem('exportedFiles', JSON.stringify(savedFiles));
+            
+            // تحديث العرض
+            loadExportedFiles();
+        }
+        
+        // وظيفة إعادة ضبط النموذج
+        function resetForm() {
+            if (confirm('هل أنت متأكد من إعادة ضبط النموذج؟ سيتم حذف جميع البيانات المدخلة.')) {
+                document.querySelectorAll('input[type="text"], input[type="number"], input[type="date"], select').forEach(element => {
+                    element.value = '';
+                });
+                
+                document.querySelectorAll('input[type="radio"]').forEach(radio => {
+                    radio.checked = false;
+                });
+                
+                // إعادة ضبط التاريخ ليكون اليوم الحالي
+                var today = new Date().toISOString().split('T')[0];
+                document.getElementById('date').value = today;
+            }
+        }
+        
+        // وظيفة تصدير PDF
+        function exportPDF() {
+            // تحقق من رقم الهوية ورقم التواصل
+            var id = document.getElementById('identity').value;
+            var phone = document.getElementById('phone').value;
+            
+            if (id && id.length !== 10) {
+                alert('رقم الهوية يجب أن يكون 10 أرقام');
+                return;
+            }
+            
+            if (phone && phone.length !== 10) {
+                alert('رقم التواصل يجب أن يكون 10 أرقام');
+                return;
+            }
+            
+            // عرض مؤشر التحميل
+            const btnText = document.querySelector('.export-btn').textContent;
+            document.querySelector('.export-btn').textContent = 'جاري التصدير...';
+            document.querySelector('.export-btn').disabled = true;
+            
+            // تحويل النموذج إلى صورة
+            setTimeout(() => {
+                html2canvas(document.getElementById('pdf-content'), { 
+                    scale: 1.5,
+                    useCORS: true,
+                    allowTaint: true,
+                    logging: false,
+                    backgroundColor: null,
+                    imageTimeout: 0,
+                    removeContainer: true,
+                    ignoreElements: (element) => {
+                        return window.getComputedStyle(element).visibility === 'hidden';
+                    }
+                }).then(canvas => {
+                    const imgData = canvas.toDataURL('image/jpeg', 0.92);
+                    
+                    try {
+                        const { jsPDF } = window.jspdf;
+                        const pdf = new jsPDF({ 
+                            orientation: 'p', 
+                            unit: 'pt', 
+                            format: 'a4',
+                            compress: true
+                        });
+                        
+                        const pageWidth = pdf.internal.pageSize.getWidth();
+                        const imgWidth = pageWidth - 40;
+                        const imgHeight = canvas.height * imgWidth / canvas.width;
+                        
+                        pdf.addImage(imgData, 'JPEG', 20, 20, imgWidth, imgHeight, undefined, 'FAST');
+                        
+                        // إضافة اسم الملف حسب اسم المريض
+                        const patientName = document.getElementById('name').value || 'مريض';
+                        const fileName = `نموذج-زيارة-${patientName}.pdf`;
+                        
+                        // حفظ الملف
+                        pdf.save(fileName);
+                        
+                        // إضافة الملف إلى قائمة الملفات المصدرة
+                        saveExportedFile(fileName);
+                        
+                        alert('تم تصدير الملف بنجاح!');
+                        
+                    } catch (error) {
+                        console.error('حدث خطأ:', error);
+                        alert('حدث خطأ أثناء إنشاء ملف PDF. يرجى المحاولة مرة أخرى باستخدام متصفح حديث.');
+                    } finally {
+                        // إعادة تفعيل الزر
+                        document.querySelector('.export-btn').textContent = btnText;
+                        document.querySelector('.export-btn').disabled = false;
+                    }
+                }).catch(error => {
+                    console.error('خطأ في تحويل HTML إلى Canvas:', error);
+                    alert('حدث خطأ أثناء تحويل النموذج. يرجى المحاولة مرة أخرى.');
+                    document.querySelector('.export-btn').textContent = btnText;
+                    document.querySelector('.export-btn').disabled = false;
+                });
+            }, 100);
+        }
+    </script>
+</body>
+</html> 
