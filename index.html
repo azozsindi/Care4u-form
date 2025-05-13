@@ -1,0 +1,1180 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Care4u KSA - نموذج الطلب</title>
+    <style>
+        :root {
+            --primary-color: #4a0063;
+            --secondary-color: #6a1b9a;
+            --text-color: #333;
+            --background-color: #f8f9fa;
+            --border-color: #dee2e6;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--background-color);
+            direction: rtl;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .logo {
+            max-width: 200px;
+            margin-bottom: 15px;
+        }
+        
+        h1 {
+            color: var(--primary-color);
+            margin: 0;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        
+        select[multiple] {
+            height: 120px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        .btn-success {
+            background-color: #28a745;
+        }
+        
+        .btn-success:hover {
+            background-color: #218838;
+        }
+        
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        
+        .lang-switch {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .logout-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #dc3545;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .admin-btn {
+            position: absolute;
+            top: 10px;
+            right: 120px;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .admin-panel {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            display: none;
+        }
+        
+        .user-list {
+            margin-top: 20px;
+        }
+        
+        .user-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .user-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .edit-user-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .delete-user-btn {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .user-form {
+            margin-top: 20px;
+            border-top: 1px solid var(--border-color);
+            padding-top: 20px;
+        }
+        
+        .login-container {
+            max-width: 400px;
+            margin: 100px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        
+        .file-list {
+            margin-top: 20px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            padding: 10px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .file-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .file-item:last-child {
+            border-bottom: none;
+        }
+        
+        @media print {
+            .no-print {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                padding: 15px;
+            }
+            
+            .buttons {
+                flex-direction: column;
+            }
+            
+            .buttons button {
+                margin-bottom: 10px;
+            }
+        }
+        
+        .radio-group {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        
+        .radio-group label {
+            display: inline-flex;
+            align-items: center;
+            margin: 0 10px;
+            font-weight: normal;
+        }
+        
+        .radio-group input[type="radio"] {
+            width: auto;
+            margin-left: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="login-screen" class="login-container">
+        <svg xmlns="http://www.w3.org/2000/svg" width="200" height="100" viewBox="0 0 200 100" class="logo">
+            <rect width="200" height="100" fill="#ffffff" rx="10" ry="10"/>
+            <text x="100" y="60" font-family="Arial" font-size="24" font-weight="bold" text-anchor="middle" fill="#4a0063">CARE4U</text>
+            <text x="100" y="85" font-family="Arial" font-size="20" font-weight="bold" text-anchor="middle" fill="#4a0063">KSA</text>
+        </svg>
+        <h2 id="login-title">تسجيل الدخول</h2>
+        <div class="form-group">
+            <label for="username" id="username-label">اسم المستخدم</label>
+            <input type="text" id="username" name="username">
+        </div>
+        <div class="form-group">
+            <label for="password" id="password-label">كلمة المرور</label>
+            <input type="password" id="password" name="password">
+        </div>
+        <button class="btn btn-primary" onclick="login()" id="login-btn">دخول</button>
+        <div style="margin-top: 15px; font-size: 14px;">
+            <button onclick="resetDefaultUsers()" style="background: transparent; border: none; color: #4a0063; text-decoration: underline; cursor: pointer;">إعادة تعيين المستخدمين الافتراضيين</button>
+        </div>
+    </div>
+
+    <div id="main-content" style="display: none;">
+        <div class="lang-switch" onclick="toggleLanguage()" id="lang-btn">English</div>
+        <div class="logout-btn" onclick="logout()" id="logout-btn">تسجيل الخروج</div>
+        <div class="admin-btn" onclick="toggleAdminPanel()" id="admin-btn" style="display: none;">إدارة المستخدمين</div>
+        
+        <div class="admin-panel" id="admin-panel">
+            <h2>إدارة المستخدمين</h2>
+            <div class="user-list" id="user-list">
+                <!-- سيتم إضافة المستخدمين هنا -->
+            </div>
+            <div class="user-form">
+                <h3>إضافة / تعديل مستخدم</h3>
+                <input type="hidden" id="edit-user-id" value="">
+                <div class="form-group">
+                    <label for="edit-username">اسم المستخدم</label>
+                    <input type="text" id="edit-username" name="edit-username">
+                </div>
+                <div class="form-group">
+                    <label for="edit-password">كلمة المرور</label>
+                    <input type="password" id="edit-password" name="edit-password">
+                </div>
+                <div class="form-group">
+                    <label for="edit-name">الاسم الظاهر</label>
+                    <input type="text" id="edit-name" name="edit-name">
+                </div>
+                <div class="buttons">
+                    <button class="btn btn-primary" onclick="saveUser()" id="save-user-btn">حفظ</button>
+                    <button class="btn btn-success" onclick="resetUserForm()" id="reset-user-btn">إلغاء</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="container">
+            <div class="header">
+                <svg xmlns="http://www.w3.org/2000/svg" width="200" height="100" viewBox="0 0 200 100" class="logo">
+                    <rect width="200" height="100" fill="#ffffff" rx="10" ry="10"/>
+                    <text x="100" y="60" font-family="Arial" font-size="24" font-weight="bold" text-anchor="middle" fill="#4a0063">CARE4U</text>
+                    <text x="100" y="85" font-family="Arial" font-size="20" font-weight="bold" text-anchor="middle" fill="#4a0063">KSA</text>
+                </svg>
+                <h1 id="form-title">نموذج طلب خدمة</h1>
+            </div>
+            
+            <div class="form-group">
+                <label for="name" id="name-label">الاسم</label>
+                <input type="text" id="name" name="name">
+            </div>
+            
+            <div class="form-group">
+                <label for="identity" id="identity-label">رقم الهوية</label>
+                <input type="text" id="identity" name="identity" maxlength="10" pattern="\d{10}" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,10)">
+            </div>
+            
+            <div class="form-group">
+                <label for="age" id="age-label">العمر</label>
+                <input type="number" id="age" name="age" min="1" max="120">
+            </div>
+            
+            <div class="form-group">
+                <label for="date" id="date-label">التاريخ</label>
+                <input type="date" id="date" name="date">
+            </div>
+            
+            <div class="form-group">
+                <label for="phone" id="phone-label">رقم الجوال</label>
+                <input type="tel" id="phone" name="phone" maxlength="10" pattern="\d{10}" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,10)">
+            </div>
+            
+            <div class="form-group">
+                <label for="email" id="email-label">البريد الإلكتروني</label>
+                <input type="email" id="email" name="email">
+            </div>
+            
+            <div class="form-group">
+                <label for="complaint" id="complaint-label">الشكوى</label>
+                <input type="text" id="complaint" name="complaint">
+            </div>
+            
+            <div class="form-group">
+                <label for="allergy" id="allergy-label">هل يوجد أي نوع حساسية</label>
+                <div class="radio-group">
+                    <label><input type="radio" name="allergy" value="نعم"> نعم</label>
+                    <label><input type="radio" name="allergy" value="لا"> لا</label>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="infectious" id="infectious-label">هل يوجد أي امراض معدية</label>
+                <div class="radio-group">
+                    <label><input type="radio" name="infectious" value="نعم"> نعم</label>
+                    <label><input type="radio" name="infectious" value="لا"> لا</label>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="previous_operations" id="previous_operations-label">العمليات السابقة</label>
+                <input type="text" id="previous_operations" name="previous_operations">
+            </div>
+            
+            <div class="form-group">
+                <label for="analysis" id="analysis-label">هل يوجد تحليل للاخر شهر</label>
+                <div class="radio-group">
+                    <label><input type="radio" name="analysis" value="نعم"> نعم</label>
+                    <label><input type="radio" name="analysis" value="لا"> لا</label>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="medical_report" id="medical_report-label">هل يوجد تقرير طبي</label>
+                <div class="radio-group">
+                    <label><input type="radio" name="medical_report" value="نعم"> نعم</label>
+                    <label><input type="radio" name="medical_report" value="لا"> لا</label>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="doctor_visit" id="doctor_visit-label">هل يوجد طبيب في الزيارة</label>
+                <div class="radio-group">
+                    <label><input type="radio" name="doctor_visit" value="نعم"> نعم</label>
+                    <label><input type="radio" name="doctor_visit" value="لا"> لا</label>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="service" id="service-label">الخدمة المطلوبة</label>
+                <select id="service" name="service">
+                    <option value="" selected disabled>اختر الخدمة المطلوبة</option>
+                    <option value="طبيب">طبيب</option>
+                    <option value="ممرضة">ممرضة</option>
+                    <option value="علاج طبيعي">علاج طبيعي</option>
+                    <option value="مقدم رعاية">مقدم رعاية</option>
+                    <option value="اشعة">اشعة</option>
+                    <option value="تحاليل">تحاليل</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="visit_duration" id="visit_duration-label">مدة الزيارة</label>
+                <input type="text" id="visit_duration" name="visit_duration">
+            </div>
+            
+            <div class="form-group">
+                <label for="coordinator" id="coordinator-label">اسم المنسق</label>
+                <input type="text" id="coordinator" name="coordinator">
+            </div>
+            
+            <div class="form-group">
+                <label for="account" id="account-label">الحساب</label>
+                <input type="text" id="account" name="account">
+            </div>
+            
+            <div class="form-group">
+                <label for="payment" id="payment-label">طريقة الدفع</label>
+                <select id="payment" name="payment">
+                    <option value="" selected disabled>اختر طريقة الدفع</option>
+                    <option value="كاش">كاش</option>
+                    <option value="شبكة">شبكة</option>
+                    <option value="تحويل">تحويل</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="notes" id="notes-label">ملاحظات</label>
+                <textarea id="notes" name="notes" rows="4"></textarea>
+            </div>
+            
+            <div class="buttons">
+                <button class="btn btn-primary" onclick="generatePDF()" id="export-btn">تصدير PDF</button>
+                <button class="btn btn-success" onclick="resetForm()" id="reset-btn">إعادة ضبط</button>
+            </div>
+            
+            <div class="file-list">
+                <h3 id="file-list-title">الملفات المصدرة</h3>
+                <div id="exported-files">
+                    <!-- الملفات المصدرة ستظهر هنا -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- المكتبات المطلوبة -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
+    <script>
+        // إعدادات اللغة والترجمة
+        const translations = {
+            ar: {
+                formTitle: "نموذج طلب خدمة",
+                nameLabel: "الاسم",
+                identityLabel: "رقم الهوية",
+                ageLabel: "العمر",
+                dateLabel: "التاريخ",
+                phoneLabel: "رقم الجوال",
+                emailLabel: "البريد الإلكتروني",
+                complaintLabel: "الشكوى",
+                allergyLabel: "هل يوجد أي نوع حساسية",
+                infectiousLabel: "هل يوجد أي امراض معدية",
+                previous_operationsLabel: "العمليات السابقة",
+                analysisLabel: "هل يوجد تحليل للاخر شهر",
+                medical_reportLabel: "هل يوجد تقرير طبي",
+                doctor_visitLabel: "هل يوجد طبيب في الزيارة",
+                serviceLabel: "الخدمة المطلوبة",
+                visit_durationLabel: "مدة الزيارة",
+                coordinatorLabel: "اسم المنسق",
+                accountLabel: "الحساب",
+                paymentLabel: "طريقة الدفع",
+                notesLabel: "ملاحظات",
+                exportBtn: "تصدير PDF",
+                resetBtn: "إعادة ضبط",
+                langBtn: "English",
+                fileListTitle: "الملفات المصدرة",
+                loginTitle: "تسجيل الدخول",
+                usernameLabel: "اسم المستخدم",
+                passwordLabel: "كلمة المرور",
+                loginBtn: "دخول",
+                logoutBtn: "تسجيل الخروج",
+                adminBtn: "إدارة المستخدمين",
+                services: [
+                    "طبيب",
+                    "ممرضة",
+                    "علاج طبيعي",
+                    "مقدم رعاية",
+                    "اشعة",
+                    "تحاليل"
+                ],
+                paymentMethods: [
+                    "كاش",
+                    "شبكة",
+                    "تحويل"
+                ],
+                yes: "نعم",
+                no: "لا"
+            },
+            en: {
+                formTitle: "Service Request Form",
+                nameLabel: "Name",
+                identityLabel: "ID Number",
+                ageLabel: "Age",
+                dateLabel: "Date",
+                phoneLabel: "Phone Number",
+                emailLabel: "Email",
+                complaintLabel: "Complaint",
+                allergyLabel: "Any Allergies",
+                infectiousLabel: "Any Infectious Diseases",
+                previous_operationsLabel: "Previous Operations",
+                analysisLabel: "Any Analysis in the Last Month",
+                medical_reportLabel: "Medical Report Available",
+                doctor_visitLabel: "Doctor in Visit",
+                serviceLabel: "Requested Service",
+                visit_durationLabel: "Visit Duration",
+                coordinatorLabel: "Coordinator Name",
+                accountLabel: "Account",
+                paymentLabel: "Payment Method",
+                notesLabel: "Notes",
+                exportBtn: "Export PDF",
+                resetBtn: "Reset",
+                langBtn: "عربي",
+                fileListTitle: "Exported Files",
+                loginTitle: "Login",
+                usernameLabel: "Username",
+                passwordLabel: "Password",
+                loginBtn: "Login",
+                logoutBtn: "Logout",
+                adminBtn: "User Management",
+                services: [
+                    "Doctor",
+                    "Nurse",
+                    "Physical Therapy",
+                    "Caregiver",
+                    "X-ray",
+                    "Analysis"
+                ],
+                paymentMethods: [
+                    "Cash",
+                    "Card",
+                    "Transfer"
+                ],
+                yes: "Yes",
+                no: "No"
+            }
+        };
+        
+        let currentLang = 'ar';
+        let exportedFilesList = [];
+        
+        // المستخدمين المسجلين الافتراضيين
+        const defaultUsers = [
+            { username: "admin", password: "admin123", name: "المدير", isAdmin: true },
+            { username: "user1", password: "user123", name: "مستخدم 1", isAdmin: false },
+            { username: "user2", password: "user123", name: "مستخدم 2", isAdmin: false },
+            { username: "user3", password: "user123", name: "مستخدم 3", isAdmin: false },
+            { username: "user4", password: "user123", name: "مستخدم 4", isAdmin: false },
+            { username: "user5", password: "user123", name: "مستخدم 5", isAdmin: false }
+        ];
+        
+        let users = [];
+        let currentUser = null;
+        
+        // تحميل المستخدمين من التخزين المحلي أو استخدام القائمة الافتراضية
+        function loadUsers() {
+            try {
+                const savedUsers = localStorage.getItem('users');
+                if (savedUsers) {
+                    users = JSON.parse(savedUsers);
+                    // التأكد من أن المسؤول موجود دائماً
+                    if (!users.some(u => u.username === 'admin')) {
+                        users.push(defaultUsers[0]); // إضافة حساب المسؤول
+                        saveUsers();
+                    }
+                } else {
+                    users = [...defaultUsers];
+                    saveUsers();
+                }
+            } catch (e) {
+                console.error('خطأ في تحميل المستخدمين:', e);
+                users = [...defaultUsers];
+                saveUsers();
+            }
+        }
+        
+        // حفظ المستخدمين في التخزين المحلي
+        function saveUsers() {
+            localStorage.setItem('users', JSON.stringify(users));
+        }
+        
+        // تسجيل الخروج
+        function logout() {
+            localStorage.removeItem('currentUser');
+            currentUser = null;
+            document.getElementById('login-screen').style.display = 'block';
+            document.getElementById('main-content').style.display = 'none';
+            
+            // التأكد من إخفاء لوحة الإدارة
+            const adminPanel = document.getElementById('admin-panel');
+            if (adminPanel) {
+                adminPanel.style.display = 'none';
+            }
+            
+            // إعادة ضبط حقول تسجيل الدخول
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+        }
+        
+        // إظهار/إخفاء لوحة إدارة المستخدمين
+        function toggleAdminPanel() {
+            const adminPanel = document.getElementById('admin-panel');
+            if (adminPanel.style.display === 'none' || adminPanel.style.display === '') {
+                adminPanel.style.display = 'block';
+                displayUsers();
+            } else {
+                adminPanel.style.display = 'none';
+            }
+        }
+        
+        // عرض قائمة المستخدمين في لوحة الإدارة
+        function displayUsers() {
+            const userList = document.getElementById('user-list');
+            if (!userList) return; // التحقق من وجود العنصر
+            
+            userList.innerHTML = '';
+            
+            users.forEach((user, index) => {
+                if (user.username !== 'admin') {  // لا نعرض المستخدم الرئيسي في القائمة
+                    const userItem = document.createElement('div');
+                    userItem.className = 'user-item';
+                    userItem.innerHTML = `
+                        <div>
+                            <strong>${user.name}</strong> (${user.username})
+                        </div>
+                        <div class="user-actions">
+                            <button class="edit-user-btn" onclick="editUser(${index})">تعديل</button>
+                            <button class="delete-user-btn" onclick="deleteUser(${index})">حذف</button>
+                        </div>
+                    `;
+                    userList.appendChild(userItem);
+                }
+            });
+        }
+        
+        // تعديل بيانات مستخدم
+        function editUser(index) {
+            if (index < 0 || index >= users.length) return; // التحقق من صحة الفهرس
+            
+            const user = users[index];
+            document.getElementById('edit-user-id').value = index;
+            document.getElementById('edit-username').value = user.username;
+            document.getElementById('edit-password').value = user.password;
+            document.getElementById('edit-name').value = user.name;
+        }
+        
+        // حذف مستخدم
+        function deleteUser(index) {
+            if (index < 0 || index >= users.length) return; // التحقق من صحة الفهرس
+            if (users[index].username === 'admin') return; // عدم السماح بحذف المدير
+            
+            if (confirm('هل أنت متأكد من حذف هذا المستخدم؟')) {
+                users.splice(index, 1);
+                saveUsers();
+                displayUsers();
+            }
+        }
+        
+        // حفظ بيانات المستخدم (إضافة/تعديل)
+        function saveUser() {
+            const userId = document.getElementById('edit-user-id').value;
+            const username = document.getElementById('edit-username').value;
+            const password = document.getElementById('edit-password').value;
+            const name = document.getElementById('edit-name').value;
+            
+            if (!username || !password || !name) {
+                alert('يرجى ملء جميع الحقول');
+                return;
+            }
+            
+            // عدم السماح بتغيير اسم مستخدم المدير
+            if (userId !== '' && users[parseInt(userId)].username === 'admin' && username !== 'admin') {
+                alert('لا يمكن تغيير اسم مستخدم المدير');
+                return;
+            }
+            
+            if (userId !== '') {  // تعديل مستخدم موجود
+                const index = parseInt(userId);
+                if (index < 0 || index >= users.length) return; // التحقق من صحة الفهرس
+                
+                // التحقق من عدم تكرار اسم المستخدم
+                if (username !== users[index].username && users.some(u => u.username === username)) {
+                    alert('اسم المستخدم موجود بالفعل');
+                    return;
+                }
+                
+                users[index].username = username;
+                users[index].password = password;
+                users[index].name = name;
+            } else {  // إضافة مستخدم جديد
+                // التحقق من عدم وجود مستخدم بنفس اسم المستخدم
+                if (users.some(u => u.username === username)) {
+                    alert('اسم المستخدم موجود بالفعل');
+                    return;
+                }
+                
+                users.push({
+                    username: username,
+                    password: password,
+                    name: name,
+                    isAdmin: false
+                });
+            }
+            
+            saveUsers();
+            displayUsers();
+            resetUserForm();
+        }
+        
+        // إعادة ضبط نموذج المستخدم
+        function resetUserForm() {
+            document.getElementById('edit-user-id').value = '';
+            document.getElementById('edit-username').value = '';
+            document.getElementById('edit-password').value = '';
+            document.getElementById('edit-name').value = '';
+        }
+        
+        // تحقق مما إذا كان المستخدم مسجل دخوله مسبقًا
+        function checkLoginStatus() {
+            loadUsers();  // تحميل بيانات المستخدمين
+            const savedUser = localStorage.getItem('currentUser');
+            if (savedUser) {
+                try {
+                    currentUser = JSON.parse(savedUser);
+                    // التحقق من أن المستخدم لا يزال موجودًا في قائمة المستخدمين
+                    const userExists = users.some(u => u.username === currentUser.username);
+                    if (userExists) {
+                        showMainContent();
+                    } else {
+                        // إذا لم يعد المستخدم موجودًا، قم بتسجيل الخروج
+                        logout();
+                    }
+                } catch (e) {
+                    // في حالة وجود خطأ في البيانات المخزنة
+                    localStorage.removeItem('currentUser');
+                }
+            }
+        }
+        
+        // وظيفة تسجيل الدخول
+        function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            console.log("محاولة تسجيل دخول:", username, password);
+            console.log("قائمة المستخدمين:", users);
+            
+            if (!username || !password) {
+                alert(currentLang === 'ar' ? 'يرجى إدخال اسم المستخدم وكلمة المرور' : 'Please enter username and password');
+                return;
+            }
+            
+            // إعادة تحميل المستخدمين للتأكد
+            loadUsers();
+            
+            // طباعة بيانات المستخدم الذي يتطابق مع الاسم المدخل
+            const foundUser = users.find(u => u.username === username);
+            if (foundUser) {
+                console.log("المستخدم موجود:", foundUser);
+                console.log("كلمة المرور المدخلة:", password);
+                console.log("كلمة المرور المخزنة:", foundUser.password);
+                console.log("هل تتطابق كلمة المرور:", foundUser.password === password);
+            } else {
+                console.log("المستخدم غير موجود");
+            }
+            
+            const user = users.find(u => u.username === username && u.password === password);
+            
+            if (user) {
+                currentUser = user;
+                localStorage.setItem('currentUser', JSON.stringify(user));
+                showMainContent();
+            } else {
+                // إضافة المستخدمين الافتراضيين إذا كانت قائمة المستخدمين فارغة
+                if (users.length === 0 || !users.some(u => u.username === 'admin')) {
+                    users = [...defaultUsers];
+                    saveUsers();
+                    
+                    // محاولة تسجيل الدخول مرة أخرى بعد إعادة تعيين المستخدمين
+                    const user = users.find(u => u.username === username && u.password === password);
+                    if (user) {
+                        currentUser = user;
+                        localStorage.setItem('currentUser', JSON.stringify(user));
+                        showMainContent();
+                        return;
+                    }
+                }
+                
+                alert(currentLang === 'ar' ? 'اسم المستخدم أو كلمة المرور غير صحيحة' : 'Invalid username or password');
+            }
+        }
+        
+        // إظهار المحتوى الرئيسي بعد تسجيل الدخول
+        function showMainContent() {
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('main-content').style.display = 'block';
+            
+            // إظهار زر إدارة المستخدمين للمدير فقط
+            if (currentUser.isAdmin) {
+                document.getElementById('admin-btn').style.display = 'block';
+            } else {
+                document.getElementById('admin-btn').style.display = 'none';
+            }
+            
+            loadSavedFiles();
+            loadFormData(); // استرجاع بيانات النموذج
+        }
+        
+        // تحديث اللغة في الواجهة
+        function updateLanguage() {
+            document.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+            
+            document.getElementById('form-title').textContent = translations[currentLang].formTitle;
+            document.getElementById('name-label').textContent = translations[currentLang].nameLabel;
+            document.getElementById('identity-label').textContent = translations[currentLang].identityLabel;
+            document.getElementById('age-label').textContent = translations[currentLang].ageLabel;
+            document.getElementById('date-label').textContent = translations[currentLang].dateLabel;
+            document.getElementById('phone-label').textContent = translations[currentLang].phoneLabel;
+            document.getElementById('email-label').textContent = translations[currentLang].emailLabel;
+            document.getElementById('complaint-label').textContent = translations[currentLang].complaintLabel;
+            document.getElementById('allergy-label').textContent = translations[currentLang].allergyLabel;
+            document.getElementById('infectious-label').textContent = translations[currentLang].infectiousLabel;
+            document.getElementById('previous_operations-label').textContent = translations[currentLang].previous_operationsLabel;
+            document.getElementById('analysis-label').textContent = translations[currentLang].analysisLabel;
+            document.getElementById('medical_report-label').textContent = translations[currentLang].medical_reportLabel;
+            document.getElementById('doctor_visit-label').textContent = translations[currentLang].doctor_visitLabel;
+            document.getElementById('service-label').textContent = translations[currentLang].serviceLabel;
+            document.getElementById('visit_duration-label').textContent = translations[currentLang].visit_durationLabel;
+            document.getElementById('coordinator-label').textContent = translations[currentLang].coordinatorLabel;
+            document.getElementById('account-label').textContent = translations[currentLang].accountLabel;
+            document.getElementById('payment-label').textContent = translations[currentLang].paymentLabel;
+            document.getElementById('notes-label').textContent = translations[currentLang].notesLabel;
+            document.getElementById('export-btn').textContent = translations[currentLang].exportBtn;
+            document.getElementById('reset-btn').textContent = translations[currentLang].resetBtn;
+            document.getElementById('lang-btn').textContent = translations[currentLang].langBtn;
+            document.getElementById('file-list-title').textContent = translations[currentLang].fileListTitle;
+            document.getElementById('login-title').textContent = translations[currentLang].loginTitle;
+            document.getElementById('username-label').textContent = translations[currentLang].usernameLabel;
+            document.getElementById('password-label').textContent = translations[currentLang].passwordLabel;
+            document.getElementById('login-btn').textContent = translations[currentLang].loginBtn;
+            document.getElementById('logout-btn').textContent = translations[currentLang].logoutBtn;
+            document.getElementById('admin-btn').textContent = translations[currentLang].adminBtn;
+            
+            // تحديث نص الخيارات في الحقول الراديو
+            const radioGroups = ['allergy', 'infectious', 'analysis', 'medical_report', 'doctor_visit'];
+            radioGroups.forEach(name => {
+                const radios = document.querySelectorAll(`input[name="${name}"]`);
+                radios.forEach(radio => {
+                    const label = radio.parentElement;
+                    if (radio.value === 'نعم' || radio.value === 'Yes') {
+                        label.textContent = translations[currentLang].yes;
+                        label.prepend(radio);
+                    } else {
+                        label.textContent = translations[currentLang].no;
+                        label.prepend(radio);
+                    }
+                });
+            });
+            
+            // تحديث قائمة الخدمات
+            const serviceSelect = document.getElementById('service');
+            serviceSelect.innerHTML = '<option value="" selected disabled>' + (currentLang === 'ar' ? 'اختر الخدمة المطلوبة' : 'Select Service') + '</option>';
+            translations[currentLang].services.forEach((service, index) => {
+                const option = document.createElement('option');
+                option.value = translations['ar'].services[index]; // نحتفظ بالقيمة العربية دائمًا
+                option.textContent = service;
+                serviceSelect.appendChild(option);
+            });
+            
+            // تحديث قائمة طرق الدفع
+            const paymentSelect = document.getElementById('payment');
+            paymentSelect.innerHTML = '<option value="" selected disabled>' + (currentLang === 'ar' ? 'اختر طريقة الدفع' : 'Select Payment Method') + '</option>';
+            translations[currentLang].paymentMethods.forEach((method, index) => {
+                const option = document.createElement('option');
+                option.value = translations['ar'].paymentMethods[index]; // نحتفظ بالقيمة العربية دائمًا
+                option.textContent = method;
+                paymentSelect.appendChild(option);
+            });
+        }
+        
+        // وظيفة توليد ملف PDF
+        function generatePDF() {
+            try {
+                const { jsPDF } = window.jspdf;
+                if (!jsPDF) {
+                    alert('لم يتم تحميل مكتبة jsPDF بشكل صحيح. يرجى تحديث الصفحة والمحاولة مرة أخرى.');
+                    return;
+                }
+                
+                // إخفاء العناصر التي لا نريد طباعتها
+                const buttonsDiv = document.querySelector('.buttons');
+                const fileListDiv = document.querySelector('.file-list');
+                const langBtn = document.querySelector('.lang-switch');
+                const logoutBtn = document.querySelector('.logout-btn');
+                const adminBtn = document.querySelector('.admin-btn');
+                
+                if (buttonsDiv) buttonsDiv.classList.add('no-print');
+                if (fileListDiv) fileListDiv.classList.add('no-print');
+                if (langBtn) langBtn.classList.add('no-print');
+                if (logoutBtn) logoutBtn.classList.add('no-print');
+                if (adminBtn) adminBtn.classList.add('no-print');
+                
+                // تحسين الأداء بتقليل المقياس
+                html2canvas(document.querySelector('.container'), {
+                    scale: 1.5,
+                    useCORS: true,
+                    logging: false,
+                    allowTaint: true
+                }).then(canvas => {
+                    // إعادة العناصر المخفية
+                    if (buttonsDiv) buttonsDiv.classList.remove('no-print');
+                    if (fileListDiv) fileListDiv.classList.remove('no-print');
+                    if (langBtn) langBtn.classList.remove('no-print');
+                    if (logoutBtn) logoutBtn.classList.remove('no-print');
+                    if (adminBtn) adminBtn.classList.remove('no-print');
+                    
+                    const imgData = canvas.toDataURL('image/jpeg', 0.8);
+                    const pdf = new jsPDF('p', 'mm', 'a4');
+                    
+                    const pdfWidth = pdf.internal.pageSize.getWidth();
+                    const pdfHeight = pdf.internal.pageSize.getHeight();
+                    const imgWidth = canvas.width;
+                    const imgHeight = canvas.height;
+                    const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
+                    const imgX = (pdfWidth - imgWidth * ratio) / 2;
+                    
+                    pdf.addImage(imgData, 'JPEG', imgX, 0, imgWidth * ratio, imgHeight * ratio);
+                    
+                    // استخراج البيانات لاسم الملف
+                    const nameInput = document.getElementById('name').value || 'unnamed';
+                    const dateStr = new Date().toLocaleDateString().replace(/\//g, '-');
+                    const fileName = `Care4u_${nameInput}_${dateStr}.pdf`;
+                    
+                    // حفظ الملف
+                    pdf.save(fileName);
+                    
+                    // إضافة الملف إلى القائمة
+                    addFileToList(fileName);
+                }).catch(err => {
+                    console.error('خطأ في إنشاء الصورة للنموذج:', err);
+                    alert('حدث خطأ أثناء إنشاء ملف PDF. يرجى المحاولة مرة أخرى.');
+                });
+            } catch (e) {
+                console.error('خطأ في توليد PDF:', e);
+                alert('حدث خطأ أثناء إنشاء ملف PDF. يرجى المحاولة مرة أخرى.');
+            }
+        }
+        
+        // إضافة ملف إلى قائمة الملفات المصدرة
+        function addFileToList(fileName) {
+            const now = new Date();
+            const fileInfo = {
+                name: fileName,
+                date: now.toLocaleDateString(),
+                time: now.toLocaleTimeString(),
+                user: currentUser.name
+            };
+            
+            exportedFilesList.push(fileInfo);
+            saveFilesList();
+            displayFilesList();
+        }
+        
+        // حفظ قائمة الملفات في التخزين المحلي
+        function saveFilesList() {
+            localStorage.setItem('exportedFiles', JSON.stringify(exportedFilesList));
+        }
+        
+        // تحميل قائمة الملفات من التخزين المحلي
+        function loadSavedFiles() {
+            const savedFiles = localStorage.getItem('exportedFiles');
+            if (savedFiles) {
+                exportedFilesList = JSON.parse(savedFiles);
+                displayFilesList();
+            }
+        }
+        
+        // عرض قائمة الملفات المصدرة
+        function displayFilesList() {
+            const fileListContainer = document.getElementById('exported-files');
+            fileListContainer.innerHTML = '';
+            
+            if (exportedFilesList.length === 0) {
+                fileListContainer.innerHTML = '<p>' + (currentLang === 'ar' ? 'لا توجد ملفات مصدرة' : 'No exported files') + '</p>';
+                return;
+            }
+            
+            exportedFilesList.forEach((file, index) => {
+                const fileItem = document.createElement('div');
+                fileItem.className = 'file-item';
+                fileItem.innerHTML = `
+                    <div>${file.name}</div>
+                    <div>${file.date} ${file.time} - ${file.user}</div>
+                `;
+                fileListContainer.appendChild(fileItem);
+            });
+        }
+        
+        // إعادة ضبط النموذج
+        function resetForm() {
+            if (confirm('هل أنت متأكد من إعادة ضبط النموذج؟ سيتم حذف جميع البيانات المدخلة.')) {
+                const form = document.querySelector('.container').querySelectorAll('input, select, textarea');
+                form.forEach(element => {
+                    if (element.type === 'radio' || element.type === 'checkbox') {
+                        element.checked = false;
+                    } else {
+                        element.value = '';
+                    }
+                });
+                
+                // حذف البيانات المحفوظة
+                if (currentUser) {
+                    localStorage.removeItem('formData_' + currentUser.username);
+                }
+            }
+        }
+        
+        // حفظ بيانات النموذج في التخزين المحلي
+        function saveFormData() {
+            // التأكد من وجود مستخدم حالي
+            if (!currentUser) return;
+            
+            try {
+                const formData = {
+                    name: document.getElementById('name').value || '',
+                    identity: document.getElementById('identity').value || '',
+                    age: document.getElementById('age').value || '',
+                    date: document.getElementById('date').value || '',
+                    phone: document.getElementById('phone').value || '',
+                    email: document.getElementById('email').value || '',
+                    complaint: document.getElementById('complaint').value || '',
+                    allergy: document.querySelector('input[name="allergy"]:checked')?.value || '',
+                    infectious: document.querySelector('input[name="infectious"]:checked')?.value || '',
+                    previous_operations: document.getElementById('previous_operations').value || '',
+                    analysis: document.querySelector('input[name="analysis"]:checked')?.value || '',
+                    medical_report: document.querySelector('input[name="medical_report"]:checked')?.value || '',
+                    doctor_visit: document.querySelector('input[name="doctor_visit"]:checked')?.value || '',
+                    service: document.getElementById('service').value || '',
+                    visit_duration: document.getElementById('visit_duration').value || '',
+                    coordinator: document.getElementById('coordinator').value || '',
+                    account: document.getElementById('account').value || '',
+                    payment: document.getElementById('payment').value || '',
+                    notes: document.getElementById('notes').value || ''
+                };
+                
+                // حفظ البيانات لكل مستخدم على حدة
+                localStorage.setItem('formData_' + currentUser.username, JSON.stringify(formData));
+            } catch (e) {
+                console.error('خطأ في حفظ بيانات النموذج:', e);
+            }
+        }
+        
+        // استرجاع بيانات النموذج من التخزين المحلي
+        function loadFormData() {
+            if (!currentUser) return;
+            
+            try {
+                const savedData = localStorage.getItem('formData_' + currentUser.username);
+                if (!savedData) return;
+                
+                const formData = JSON.parse(savedData);
+                
+                // ملء الحقول بالبيانات المحفوظة
+                if (document.getElementById('name')) document.getElementById('name').value = formData.name || '';
+                if (document.getElementById('identity')) document.getElementById('identity').value = formData.identity || '';
+                if (document.getElementById('age')) document.getElementById('age').value = formData.age || '';
+                if (document.getElementById('date')) document.getElementById('date').value = formData.date || '';
+                if (document.getElementById('phone')) document.getElementById('phone').value = formData.phone || '';
+                if (document.getElementById('email')) document.getElementById('email').value = formData.email || '';
+                if (document.getElementById('complaint')) document.getElementById('complaint').value = formData.complaint || '';
+                
+                // التحقق من وجود عناصر الراديو قبل محاولة تعيين قيمها
+                if (formData.allergy) {
+                    const allergyRadio = document.querySelector(`input[name="allergy"][value="${formData.allergy}"]`);
+                    if (allergyRadio) allergyRadio.checked = true;
+                }
+                
+                if (formData.infectious) {
+                    const infectiousRadio = document.querySelector(`input[name="infectious"][value="${formData.infectious}"]`);
+                    if (infectiousRadio) infectiousRadio.checked = true;
+                }
+                
+                if (document.getElementById('previous_operations')) document.getElementById('previous_operations').value = formData.previous_operations || '';
+                
+                if (formData.analysis) {
+                    const analysisRadio = document.querySelector(`input[name="analysis"][value="${formData.analysis}"]`);
+                    if (analysisRadio) analysisRadio.checked = true;
+                }
+                
+                if (formData.medical_report) {
+                    const medicalReportRadio = document.querySelector(`input[name="medical_report"][value="${formData.medical_report}"]`);
+                    if (medicalReportRadio) medicalReportRadio.checked = true;
+                }
+                
+                if (formData.doctor_visit) {
+                    const doctorVisitRadio = document.querySelector(`input[name="doctor_visit"][value="${formData.doctor_visit}"]`);
+                    if (doctorVisitRadio) doctorVisitRadio.checked = true;
+                }
+                
+                if (document.getElementById('service')) document.getElementById('service').value = formData.service || '';
+                if (document.getElementById('visit_duration')) document.getElementById('visit_duration').value = formData.visit_duration || '';
+                if (document.getElementById('coordinator')) document.getElementById('coordinator').value = formData.coordinator || '';
+                if (document.getElementById('account')) document.getElementById('account').value = formData.account || '';
+                if (document.getElementById('payment')) document.getElementById('payment').value = formData.payment || '';
+                if (document.getElementById('notes')) document.getElementById('notes').value = formData.notes || '';
+            } catch (e) {
+                console.error('خطأ في استرجاع بيانات النموذج:', e);
+            }
+        }
+        
+        // حفظ البيانات عند التغيير في أي حقل
+        document.addEventListener('DOMContentLoaded', function() {
+            const formElements = document.querySelectorAll('input, select, textarea');
+            formElements.forEach(element => {
+                element.addEventListener('change', saveFormData);
+            });
+            
+            // ضبط التاريخ الافتراضي ليكون اليوم الحالي
+            const dateInput = document.getElementById('date');
+            if (dateInput) {
+                const today = new Date().toISOString().split('T')[0];
+                dateInput.value = today;
+            }
+        });
+        
+        // التحقق من حالة تسجيل الدخول عند تحميل الصفحة
+        window.onload = function() {
+            checkLoginStatus();
+            updateLanguage();
+        };
+
+        // تبديل اللغة
+        function toggleLanguage() {
+            currentLang = currentLang === 'ar' ? 'en' : 'ar';
+            updateLanguage();
+        }
+
+        // إعادة تعيين المستخدمين الافتراضيين
+        function resetDefaultUsers() {
+            if (confirm('هذا سيعيد تعيين جميع المستخدمين إلى الإعدادات الافتراضية. هل أنت متأكد؟')) {
+                // مسح التخزين المحلي
+                localStorage.removeItem('users');
+                localStorage.removeItem('currentUser');
+                
+                // إعادة تعيين المستخدمين الافتراضيين
+                users = [...defaultUsers];
+                saveUsers();
+                
+                // تنبيه المستخدم
+                alert('تم إعادة تعيين المستخدمين الافتراضيين بنجاح. حاول تسجيل الدخول باستخدام:\nاسم المستخدم: admin\nكلمة المرور: admin123');
+                
+                // إعادة تحميل الصفحة
+                location.reload();
+            }
+        }
+    </script>
+</body>
+</html> 

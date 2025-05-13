@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Care4u KSA - نموذج الطلب (اختبار)</title>
+    <style>
+        :root {
+            --primary-color: #4a0063;
+            --secondary-color: #6a1b9a;
+            --text-color: #333;
+            --background-color: #f8f9fa;
+            --border-color: #dee2e6;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--background-color);
+            direction: rtl;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .logo {
+            max-width: 200px;
+            margin-bottom: 15px;
+        }
+        
+        h1 {
+            color: var(--primary-color);
+            margin: 0;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        
+        select[multiple] {
+            height: 120px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        .btn-success {
+            background-color: #28a745;
+        }
+        
+        .btn-success:hover {
+            background-color: #218838;
+        }
+        
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        
+        .lang-switch {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        @media print {
+            .no-print {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                padding: 15px;
+            }
+            
+            .buttons {
+                flex-direction: column;
+            }
+            
+            .buttons button {
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="lang-switch" onclick="toggleLanguage()" id="lang-btn">English</div>
+    <div class="container">
+        <div class="header">
+            <img src="logo.svg" alt="Care4u KSA Logo" class="logo">
+            <h1 id="form-title">نموذج طلب خدمة</h1>
+        </div>
+        
+        <div class="form-group">
+            <label for="name" id="name-label">الاسم</label>
+            <input type="text" id="name" name="name">
+        </div>
+        
+        <div class="form-group">
+            <label for="phone" id="phone-label">رقم الجوال</label>
+            <input type="tel" id="phone" name="phone">
+        </div>
+        
+        <div class="form-group">
+            <label for="email" id="email-label">البريد الإلكتروني</label>
+            <input type="email" id="email" name="email">
+        </div>
+        
+        <div class="form-group">
+            <label for="service" id="service-label">الخدمة المطلوبة</label>
+            <select id="service" name="service" multiple>
+                <option value="رعاية كبار السن">رعاية كبار السن</option>
+                <option value="رعاية أطفال">رعاية أطفال</option>
+                <option value="رعاية طبية">رعاية طبية</option>
+                <option value="خدمات منزلية">خدمات منزلية</option>
+                <option value="أخرى">أخرى</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="payment" id="payment-label">طريقة الدفع</label>
+            <select id="payment" name="payment">
+                <option value="بطاقة ائتمان">بطاقة ائتمان</option>
+                <option value="تحويل بنكي">تحويل بنكي</option>
+                <option value="دفع نقدي">دفع نقدي</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="notes" id="notes-label">ملاحظات</label>
+            <textarea id="notes" name="notes" rows="4"></textarea>
+        </div>
+        
+        <div class="buttons">
+            <button class="btn btn-primary" onclick="generatePDF()" id="export-btn">تصدير PDF</button>
+            <button class="btn btn-success" onclick="resetForm()" id="reset-btn">إعادة ضبط</button>
+        </div>
+    </div>
+
+    <!-- المكتبات المطلوبة -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
+    <script>
+        // إعدادات اللغة والترجمة
+        const translations = {
+            ar: {
+                formTitle: "نموذج طلب خدمة",
+                nameLabel: "الاسم",
+                phoneLabel: "رقم الجوال",
+                emailLabel: "البريد الإلكتروني",
+                serviceLabel: "الخدمة المطلوبة",
+                paymentLabel: "طريقة الدفع",
+                notesLabel: "ملاحظات",
+                exportBtn: "تصدير PDF",
+                resetBtn: "إعادة ضبط",
+                langBtn: "English",
+                services: [
+                    "رعاية كبار السن",
+                    "رعاية أطفال",
+                    "رعاية طبية",
+                    "خدمات منزلية",
+                    "أخرى"
+                ],
+                paymentMethods: [
+                    "بطاقة ائتمان",
+                    "تحويل بنكي",
+                    "دفع نقدي"
+                ]
+            },
+            en: {
+                formTitle: "Service Request Form",
+                nameLabel: "Name",
+                phoneLabel: "Phone Number",
+                emailLabel: "Email",
+                serviceLabel: "Requested Service",
+                paymentLabel: "Payment Method",
+                notesLabel: "Notes",
+                exportBtn: "Export PDF",
+                resetBtn: "Reset",
+                langBtn: "عربي",
+                services: [
+                    "Elderly Care",
+                    "Child Care",
+                    "Medical Care",
+                    "Home Services",
+                    "Other"
+                ],
+                paymentMethods: [
+                    "Credit Card",
+                    "Bank Transfer",
+                    "Cash Payment"
+                ]
+            }
+        };
+        
+        let currentLang = 'ar';
+        
+        // تبديل اللغة
+        function toggleLanguage() {
+            currentLang = currentLang === 'ar' ? 'en' : 'ar';
+            updateLanguage();
+        }
+        
+        // تحديث اللغة في الواجهة
+        function updateLanguage() {
+            document.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+            
+            document.getElementById('form-title').textContent = translations[currentLang].formTitle;
+            document.getElementById('name-label').textContent = translations[currentLang].nameLabel;
+            document.getElementById('phone-label').textContent = translations[currentLang].phoneLabel;
+            document.getElementById('email-label').textContent = translations[currentLang].emailLabel;
+            document.getElementById('service-label').textContent = translations[currentLang].serviceLabel;
+            document.getElementById('payment-label').textContent = translations[currentLang].paymentLabel;
+            document.getElementById('notes-label').textContent = translations[currentLang].notesLabel;
+            document.getElementById('export-btn').textContent = translations[currentLang].exportBtn;
+            document.getElementById('reset-btn').textContent = translations[currentLang].resetBtn;
+            document.getElementById('lang-btn').textContent = translations[currentLang].langBtn;
+            
+            // تحديث قائمة الخدمات
+            const serviceSelect = document.getElementById('service');
+            serviceSelect.innerHTML = '';
+            translations[currentLang].services.forEach(service => {
+                const option = document.createElement('option');
+                option.value = service;
+                option.textContent = service;
+                serviceSelect.appendChild(option);
+            });
+            
+            // تحديث قائمة طرق الدفع
+            const paymentSelect = document.getElementById('payment');
+            paymentSelect.innerHTML = '';
+            translations[currentLang].paymentMethods.forEach(method => {
+                const option = document.createElement('option');
+                option.value = method;
+                option.textContent = method;
+                paymentSelect.appendChild(option);
+            });
+        }
+        
+        // وظيفة توليد ملف PDF
+        function generatePDF() {
+            const { jsPDF } = window.jspdf;
+            
+            // إخفاء العناصر التي لا نريد طباعتها
+            const buttonsDiv = document.querySelector('.buttons');
+            const langBtn = document.querySelector('.lang-switch');
+            
+            buttonsDiv.classList.add('no-print');
+            langBtn.classList.add('no-print');
+            
+            // تحسين الأداء بتقليل المقياس
+            html2canvas(document.querySelector('.container'), {
+                scale: 1.5,
+                useCORS: true,
+                logging: false,
+                allowTaint: true
+            }).then(canvas => {
+                // إعادة العناصر المخفية
+                buttonsDiv.classList.remove('no-print');
+                langBtn.classList.remove('no-print');
+                
+                const imgData = canvas.toDataURL('image/jpeg', 0.8);
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                
+                const pdfWidth = pdf.internal.pageSize.getWidth();
+                const pdfHeight = pdf.internal.pageSize.getHeight();
+                const imgWidth = canvas.width;
+                const imgHeight = canvas.height;
+                const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
+                const imgX = (pdfWidth - imgWidth * ratio) / 2;
+                
+                pdf.addImage(imgData, 'JPEG', imgX, 0, imgWidth * ratio, imgHeight * ratio);
+                
+                // استخراج البيانات لاسم الملف
+                const nameInput = document.getElementById('name').value || 'unnamed';
+                const dateStr = new Date().toLocaleDateString().replace(/\//g, '-');
+                const fileName = `Care4u_${nameInput}_${dateStr}.pdf`;
+                
+                // حفظ الملف
+                pdf.save(fileName);
+            });
+        }
+        
+        // إعادة ضبط النموذج
+        function resetForm() {
+            document.getElementById('name').value = '';
+            document.getElementById('phone').value = '';
+            document.getElementById('email').value = '';
+            document.getElementById('service').selectedIndex = -1;
+            document.getElementById('payment').selectedIndex = 0;
+            document.getElementById('notes').value = '';
+        }
+        
+        // تحديث اللغة عند تحميل الصفحة
+        window.onload = function() {
+            updateLanguage();
+        };
+    </script>
+</body>
+</html> 
